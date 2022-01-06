@@ -8,5 +8,6 @@ else:
     bot.login(USER)
 
 bot.buy_player(PLAYER["name"], PLAYER["cost"])
+bot.quit()
 
 
