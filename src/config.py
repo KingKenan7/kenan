@@ -1,5 +1,6 @@
 from selenium import webdriver
 import platform
+import os
 
 
 def create_driver():
@@ -9,6 +10,8 @@ def create_driver():
         path = 'chrome_mac/chromedriver'
     elif system == 'Linux':
         path = 'chrome_linux/chromedriver'
+    elif system == 'Windows':
+        path = os.getcwd() + '\chrome_windows\chromedriver.exe'
     else:
         raise OSError(f'Operating system {system} is not supported')
 
@@ -22,14 +25,22 @@ def create_driver():
 
 URL = "https://www.ea.com/pl-pl/fifa/ultimate-team/web-app/"
 
+EA_EMAIL = "EA@e.ea.com"
+
+PLAYER = {
+    "name": "Kloster",
+    "cost": 15000,
+}
+
+INCREASE_COUNT = 20
+
+LOGIN_MANUALLY = True
+
+# Credentials - fill in if LOGIN_MANUALLY is False
+
 USER = {
     "email": "your_email@example.com",
     "password": "your_password",
-}
-
-PLAYER = {
-    "name": "ndombele",
-    "cost": 5500,
 }
 
 EMAIL_CREDENTIALS = {
@@ -37,8 +48,4 @@ EMAIL_CREDENTIALS = {
     "password": "your_password",
 }
 
-EA_EMAIL = "EA@e.ea.com"
 
-ALLOW_NOTIFICATIONS = False
-
-INCREASE_COUNT = 20

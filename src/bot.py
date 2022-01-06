@@ -1,15 +1,13 @@
-import os
 from time import sleep
 
-from gtts import gTTS
 from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 
-from src.config import create_driver, ALLOW_NOTIFICATIONS, INCREASE_COUNT
 from src.config import URL
+from src.config import create_driver, INCREASE_COUNT
 from src.email_manager import get_access_code
 from src.helpers import wait_for_shield_invisibility, MarketError
 
@@ -21,6 +19,7 @@ class Bot:
         self.driver.get(URL)
         print("Starting sniping bot...")
 
+    wait_for_market_available
     @staticmethod
     def read(text, language='en'):
         if ALLOW_NOTIFICATIONS:
@@ -33,9 +32,13 @@ class Bot:
         self.driver.quit()
 
     def login(self, user):
+=======
+    def go_to_login_page(self):
+        add_windows_compatibility
         WebDriverWait(self.driver, 15).until(
             EC.visibility_of_element_located((By.XPATH, '//*[@class="ut-login-content"]//button'))
         )
+        print("Logging in...")
         sleep(2)
         self.driver.find_element(By.XPATH, '//*[@class="ut-login-content"]//button').click()
 
@@ -43,7 +46,9 @@ class Bot:
             EC.visibility_of_element_located((By.ID, 'email'))
         )
 
-        print("Logging in...")
+    def login(self, user):
+        self.go_to_login_page()
+
         self.driver.find_element(By.ID, 'email').send_keys(user["email"])
         self.driver.find_element(By.ID, 'password').send_keys(user["password"])
         self.driver.find_element(By.ID, 'btnLogin').click()
@@ -58,6 +63,24 @@ class Bot:
         self.driver.find_element(By.ID, 'btnSubmit').click()
 
         WebDriverWait(self.driver, 30).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, 'icon-transfer'))
+        )
+        sleep(2)
+
+    def login_manually(self):
+        self.go_to_login_page()
+
+        print("Enter your account credentials and click login button.")
+        print("Waiting 5 minutes...")
+
+        WebDriverWait(self.driver, 300).until(
+            EC.element_to_be_clickable((By.ID, 'btnSendCode'))
+        ).click()
+
+        print("Provide EA access code and click submit button.")
+        print("Waiting 5 minutes...")
+
+        WebDriverWait(self.driver, 300).until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'icon-transfer'))
         )
         sleep(2)
@@ -113,7 +136,11 @@ class Bot:
                     price = int(coins) - int(new_coins)
                     print("Success! You bought " + player + " for " + str(price) + " coins.")
                     coins = new_coins
+wait_for_market_available
                     self.read("Success")
+=======
+                    success_count += 1
+add_windows_compatibility
 
             # Wait 5 minutes if transfer market doesn't work
             if "Notification negative" in result.get_attribute("class"):
@@ -171,8 +198,13 @@ class Bot:
                 if self.search_player(player, max_price):
                     break
 
+       wait_for_market_available
             except TimeoutException:
                 print("Error, you have to wait some time, until the transfer market will be available again.")
                 print("Waiting 5 minutes...")
                 sleep(300)
                 continue
+=======
+        except TimeoutException:
+            print("Error, check the browser")
+      add_windows_compatibility
